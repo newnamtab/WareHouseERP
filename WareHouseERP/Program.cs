@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WareHouseERP.Data;
+using WareHouseERP.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,5 +38,8 @@ app.UseHttpsRedirection();
 // Add authentication and authorization middleware
 app.UseAuthentication();
 app.UseAuthorization();
+
+// Map Authorization endpoints
+app.MapAuthorizationEndpoints();
 
 app.Run();
