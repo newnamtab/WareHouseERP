@@ -2,15 +2,18 @@
 {
     internal class Storage
     {
+
         private readonly List<StorageItem> _storageItems;
-        private readonly List<ReservedStorageItem> _reservedStorageItems;
+
+        public Guid Id { get; private set; }
 
         public Storage()
         {
             _storageItems = new List<StorageItem>();
-            _reservedStorageItems = new List<ReservedStorageItem>();
+
+            Id = Guid.NewGuid();
         }
-        public bool HasProductAvailable(Guid productId) => NoneReservedItems(productId)?.Any() ?? false;
+        public bool HasProductAvailable(Guid productId) => TryGetItem(productId, out var storageItem);
         public bool HasStorageSpace(Guid productId) => _storageItems.Count() < 100; // Assuming a max capacity of 100 items per product
         public bool AddItem(Guid productId)
         {
@@ -22,45 +25,18 @@
             return false;
         }
 
-        public StorageItem RemoveItem(Guid itemId)
+        public StorageItem RemoveItem(Guid productId)
         {
-            if (TryGetReservedItem(itemId, out var reservedItem))
+            if (TryGetItem(productId, out var storageItem))
             {
-                _reservedStorageItems.RemoveAll(reserved => reserved.ItemId == reservedItem.ItemId);
-                _storageItems.RemoveAll(item => item.ItemId == reservedItem.ItemId);
-                return reservedItem;
+                _storageItems.RemoveAll(item => item.ItemId == storageItem.ItemId);
+                return storageItem;
             }
             return StorageItem.Empty();
         }
-        private bool TryGetReservedItem(Guid productId, out StorageItem storageItem)
+        private bool TryGetItem(Guid productId, out StorageItem storageItem)
         {
-            var reservedStorageItem = _reservedStorageItems.FirstOrDefault(reserved => reserved.ProductId == productId);
-            if (reservedStorageItem != null)
-            {
-                var item = _storageItems.FirstOrDefault(item => item.ItemId == reservedStorageItem.ItemId);
-                if (item != null)
-                {
-                    storageItem = item;
-                    return true;
-                }
-            }
-            storageItem = StorageItem.Empty();
-            return false;
-        }
-
-        public bool ReserveItem(Guid productId)
-        {
-            var storageItem = _storageItems.FirstOrDefault(item => item.ProductId == productId);
-            if (storageItem != null)
-            {
-                _reservedStorageItems.Add(new ReservedStorageItem(storageItem.ProductId, storageItem.ItemId));
-                return true;
-            }
-            return false;
-        }
-        private bool TryGetNoneReservedItem(Guid productId, out StorageItem storageItem)
-        {
-            var availableStorageItem = NoneReservedItems(productId)?.FirstOrDefault();
+            var availableStorageItem = _storageItems.FirstOrDefault( i=>i.ProductId == productId);
 
             if (availableStorageItem != null)
             {
@@ -69,11 +45,6 @@
             }
             storageItem = StorageItem.Empty();
             return false;
-        }
-        private IEnumerable<StorageItem> NoneReservedItems(Guid productId)
-        {
-            var reservedProducts = _reservedStorageItems.Where(reserved => reserved.ProductId == productId);
-            return _storageItems.Where(item => item.ProductId == productId && !reservedProducts.Any(reserved => reserved.ItemId == item.ItemId));
         }
     }
 }

@@ -13,6 +13,4 @@
         public static StorageItem NewItem(Guid productId) => new StorageItem(productId, Guid.NewGuid() );
         public static StorageItem Empty() => new StorageItem(Guid.Empty, Guid.Empty);
     }
-    internal record ReservedStorageItem(Guid ProductId, Guid ItemId);
-  
 }

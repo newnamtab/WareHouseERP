@@ -1,26 +1,64 @@
-﻿namespace StorageManagement
+﻿using System.Collections.Concurrent;
+
+namespace StorageManagement
 {
     internal class StorageManager
     {
         private readonly IEnumerable<Storage> _storages;
+        private readonly ConcurrentDictionary<string,  Dictionary<Guid, Guid>> _productStorageMap;
 
         private StorageManager(IEnumerable<Storage> storages)
         {
             _storages = storages;
+            _productStorageMap = new ConcurrentDictionary<string, Dictionary<Guid, Guid>>();
         }
-        public bool ReserveProduct(Guid productId)
+        public bool ReserveProduct(Guid productId, string forExternaleReference)
         {
             var relevantStorage = _storages.FirstOrDefault(storage => storage.HasProductAvailable(productId));
             if (relevantStorage != null)
             {
-                return relevantStorage.ReserveItem(productId);
+                var productReserved = relevantStorage.ReserveItem(productId);
+                return RecordStorageReservation(forExternaleReference, relevantStorage.Id, productId);
             }
             return false;
         }
-
-        public bool ProductOut(Guid productId)
+        private bool RecordStorageReservation(string forExternalReference, Guid storeageId, Guid productId)
         {
-            throw new NotImplementedException();
+            _productStorageMap.AddOrUpdate(forExternalReference,
+                                           new Dictionary<Guid, Guid>() { { storeageId, productId } },
+                                           (key, existingStorage) => {
+                                                                         existingStorage.TryAdd(storeageId, productId);
+                                                                         return existingStorage;
+                                                                     }
+                                            );
+            return true;
+        }
+
+        public Guid ProductOut(Guid productId, string forExternaleReference)
+        {
+            var relevantStorage = RetrieveStorageReservation(forExternaleReference, productId);
+            if (relevantStorage != null)
+            {
+                var itemRemoved = relevantStorage.RemoveItem(productId);
+                if (itemRemoved != StorageItem.Empty())
+                {
+                    return itemRemoved.ItemId;
+                }
+            }
+            return Guid.Empty;
+        }
+        private Storage RetrieveStorageReservation(string forExternalReference, Guid productId)
+        {
+            if (_productStorageMap.TryGetValue(forExternalReference, out var storageReservations) &&
+                storageReservations.TryGetValue(productId, out var storageId))
+            {
+                var relevantStorage = _storages.FirstOrDefault(storage => storage.Id == storageId);
+                if (relevantStorage != null)
+                {
+                    return relevantStorage;
+                }
+            }
+            return null;
         }
 
         public bool ProductIn(Guid productId)
