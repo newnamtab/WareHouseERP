@@ -2,19 +2,20 @@
 {
     internal class Storage
     {
-
+        private readonly int _capacity;
         private readonly List<StorageItem> _storageItems;
 
         public Guid Id { get; private set; }
 
-        public Storage()
+        public Storage(int capacity)
         {
             _storageItems = new List<StorageItem>();
 
             Id = Guid.NewGuid();
+            _capacity = capacity;
         }
         public bool HasProductAvailable(Guid productId) => TryGetItem(productId, out var storageItem);
-        public bool HasStorageSpace(Guid productId) => _storageItems.Count() < 100; // Assuming a max capacity of 100 items per product
+        public bool HasStorageSpace(Guid productId) => _storageItems.Count() < _capacity;
         public bool AddItem(Guid productId)
         {
             if (HasStorageSpace(productId))
