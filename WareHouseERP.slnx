@@ -1,7 +1,9 @@
 <Solution>
   <Project Path="Entities/Entities.csproj" Id="8811491e-8f3b-49e4-9162-5cf92a1c3390" />
+  <Project Path="OrderManagement.Tests/OrderManagement.Tests.csproj" Id="97f59f00-e1bc-464c-a661-a21790bfb5f7" />
   <Project Path="OrderManagement/OrderManagement.csproj" Id="0faa5b6c-eff5-4a0c-b2cb-41ae2d2e2232" />
   <Project Path="Persistence/Persistence.csproj" Id="efc3c12c-728f-444c-8de5-d25763e19734" />
+  <Project Path="StorageManagement.Tests/StorageManagement.Tests.csproj" Id="af593938-7f22-4de4-a954-b370eac6bd23" />
   <Project Path="WarehouseDomain/StorageManagement.csproj" Id="cd37a419-947d-4fbe-a2d2-d39121b8bfcc" />
   <Project Path="WareHouseERP/WareHouseERP.csproj" />
 </Solution>

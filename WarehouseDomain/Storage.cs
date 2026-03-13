@@ -1,6 +1,6 @@
 ﻿namespace StorageManagement
 {
-    internal class Storage
+    public class Storage
     {
         private readonly int _capacity;
         private readonly List<StorageItem> _storageItems;
@@ -37,7 +37,7 @@
         }
         private bool TryGetItem(Guid productId, out StorageItem storageItem)
         {
-            var availableStorageItem = _storageItems.FirstOrDefault( i=>i.ProductId == productId);
+            var availableStorageItem = _storageItems.FirstOrDefault( i => i.ProductId == productId);
 
             if (availableStorageItem != null)
             {

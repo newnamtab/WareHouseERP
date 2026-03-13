@@ -1,11 +1,11 @@
 ﻿namespace StorageManagement
 {
-    internal record StorageItem
+    public record StorageItem
     {
         public Guid ItemId { get; init; }
         public Guid ProductId { get; init; }
 
-        private StorageItem(Guid itemId, Guid productId)
+        private StorageItem( Guid productId, Guid itemId)
         {
             ItemId = itemId;
             ProductId = productId;
