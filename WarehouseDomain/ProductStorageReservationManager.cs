@@ -2,7 +2,7 @@
 
 namespace StorageManagement
 {
-    internal class ProductStorageReservationManager
+    internal class ProductStorageReservationManager : IProductStorageReservationManager
     {
         private readonly ConcurrentDictionary<string, Dictionary<Guid, Guid>> _productStorageReservationMap;
 

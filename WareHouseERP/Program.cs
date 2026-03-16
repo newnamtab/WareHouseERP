@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WareHouseERP.Data;
 using WareHouseERP.Authorization;
+using Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +14,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationIdentityDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.ConfigureStorageManagement( builder.Configuration.GetConnectionString("DefaultConnection") );
 
 // Configure Identity
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
