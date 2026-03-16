@@ -8,9 +8,8 @@
         public void Storage_Happy_Path_Has_Storage_Space(int capacity, bool expectedToHaveStorageSpace)
         {
             var sut = GetSut(capacity);
-            var productId = Guid.NewGuid();
 
-            var hasStorageSpace = sut.HasStorageSpace(productId);
+            var hasStorageSpace = sut.HasStorageSpace();
 
             Assert.Equal(expectedToHaveStorageSpace, hasStorageSpace);
         }
@@ -58,7 +57,7 @@
             var productId = Guid.NewGuid();
             sut.AddItem(productId);
 
-            var removeResult = sut.RemoveItem(productId);
+            var removeResult = sut.PickItem(productId);
 
             Assert.Equal(productId, removeResult.ProductId);
         }
@@ -68,7 +67,7 @@
         {
             var sut = GetSut();
             var someNotExistingProductId = Guid.NewGuid();
-            var removeResult = sut.RemoveItem( someNotExistingProductId );
+            var removeResult = sut.PickItem( someNotExistingProductId );
 
             Assert.Equal(Guid.Empty, removeResult.ProductId);
             Assert.Equal(Guid.Empty, removeResult.ItemId);

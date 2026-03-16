@@ -5,10 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Entities\Entities.csproj" />
-    <ProjectReference Include="..\Persistence\Persistence.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<InternalsVisibleTo Include="StorageManagement.Tests" />
+	</ItemGroup>
 </Project>

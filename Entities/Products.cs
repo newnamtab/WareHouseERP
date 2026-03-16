@@ -1,4 +1,4 @@
-﻿namespace StorageManagement;
+﻿namespace Entities;
 
 /// <summary>
 /// Represents a product in the warehouse with inventory management

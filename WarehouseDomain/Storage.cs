@@ -1,6 +1,6 @@
 ﻿namespace StorageManagement
 {
-    public class Storage
+    internal class Storage : IStorage
     {
         private readonly int _capacity;
         private readonly List<StorageItem> _storageItems;
@@ -11,14 +11,14 @@
         {
             _storageItems = new List<StorageItem>();
 
-            Id = Guid.NewGuid();
+            Id = capacity > 0 ? Guid.NewGuid() :Guid.Empty;
             _capacity = capacity;
         }
         public bool HasProductAvailable(Guid productId) => TryGetItem(productId, out var storageItem);
-        public bool HasStorageSpace(Guid productId) => _storageItems.Count() < _capacity;
+        public bool HasStorageSpace() => _storageItems.Count() < _capacity;
         public bool AddItem(Guid productId)
         {
-            if (HasStorageSpace(productId))
+            if (HasStorageSpace())
             {
                 _storageItems.Add(StorageItem.NewItem(productId));
                 return true;
@@ -26,7 +26,7 @@
             return false;
         }
 
-        public StorageItem RemoveItem(Guid productId)
+        public StorageItem PickItem(Guid productId)
         {
             if (TryGetItem(productId, out var storageItem))
             {

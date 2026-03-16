@@ -1,92 +1,35 @@
-﻿using System.Collections.Concurrent;
-
-namespace StorageManagement
+﻿namespace StorageManagement
 {
-    public interface IStorageInitializer
+    public interface IStorage
     {
-        IEnumerable<Storage> AvailableStorages();
+        Guid Id { get; }
+
+        bool HasProductAvailable(Guid productId);
+        bool HasStorageSpace();
+        bool AddItem(Guid productId);
+        StorageItem PickItem(Guid productId);
     }
 
-    internal class StorageManager
+    internal class StorageManager : IStorageManager
     {
-        private readonly IEnumerable<Storage> _storages;
-        private readonly ConcurrentDictionary<string,  Dictionary<Guid, Guid>> _productStorageMap;
+        private readonly IEnumerable<IStorage> _storages;
 
-        private StorageManager(IEnumerable<Storage> storages)
+        public StorageManager(IEnumerable<IStorage> storages)
         {
             _storages = storages;
-            _productStorageMap = new ConcurrentDictionary<string, Dictionary<Guid, Guid>>();
-        }
-        public static StorageManager Initialize(IStorageInitializer storageFactory)
-        {
-            return new StorageManager( storageFactory.AvailableStorages() );
         }
 
-        public bool ReserveProduct(Guid productId, string forExternaleReference)
+        public IStorage? GetStorageById(Guid storageId)
         {
-            var relevantStorage = _storages.FirstOrDefault(storage => storage.HasProductAvailable(productId));
-            if (relevantStorage != null)
-            {
-                return RecordStorageReservation(forExternaleReference, relevantStorage.Id, productId);
-            }
-            return false;
+            return _storages.FirstOrDefault(storage => storage.Id == storageId);
         }
-        private bool RecordStorageReservation(string forExternalReference, Guid storeageId, Guid productId)
+        public IStorage? GetStorageWithSpace() 
         {
-            _productStorageMap.AddOrUpdate(forExternalReference,
-                                           new Dictionary<Guid, Guid>() { { storeageId, productId } },
-                                           (key, existingStorage) => {
-                                                                         existingStorage.TryAdd(storeageId, productId);
-                                                                         return existingStorage;
-                                                                     }
-                                            );
-            return true;
+            return _storages.FirstOrDefault(storage => storage.HasStorageSpace());
         }
-
-        public Guid ProductOut(string forExternaleReference, Guid productId)
+        public IStorage? GetStorageWithProduct(Guid productId)
         {
-            var relevantStorage = RetrieveStorageReservation( forExternaleReference, productId );
-            if (relevantStorage != null)
-            {
-                var itemRemoved = relevantStorage.RemoveItem(productId);
-                if (itemRemoved.ItemId != Guid.Empty)
-                {
-                    RemoveStorageReservation(forExternaleReference, productId);
-                    return itemRemoved.ItemId;
-                }
-            }
-            return Guid.Empty;
-        }
-        private void RemoveStorageReservation(string forExternalReference, Guid productId)
-        {
-            if (_productStorageMap.TryGetValue(forExternalReference, out var storageReservations) &&
-                storageReservations.TryGetValue(productId, out var storageId))
-            {
-                storageReservations.Remove(productId);
-            }
-        }
-        private Storage RetrieveStorageReservation(string forExternalReference, Guid productId)
-        {
-            if (_productStorageMap.TryGetValue(forExternalReference, out var storageReservations) &&
-                storageReservations.TryGetValue(productId, out var storageId))
-            {
-                var relevantStorage = _storages.FirstOrDefault(storage => storage.Id == storageId);
-                if (relevantStorage != null)
-                {
-                    return relevantStorage;
-                }
-            }
-            return null;
-        }
-
-        public bool ProductIn(Guid productId)
-        {
-            var relevantStorage = _storages.FirstOrDefault(storage => storage.HasStorageSpace(productId));
-            if (relevantStorage != null)
-            {
-                return relevantStorage.AddItem(productId);
-            }
-            return false;
+            return _storages.FirstOrDefault(storage => storage.HasProductAvailable(productId));
         }
     }
 }
