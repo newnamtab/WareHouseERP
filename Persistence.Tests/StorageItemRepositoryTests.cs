@@ -37,7 +37,7 @@ namespace Persistence.Tests
                      ),
                     StorageItemQuery.Where()
                                 .MinimumPriceIs(20),
-                    ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
+                ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
                 ).WithTestDisplayName("MinimumPrice test"));
 
             Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
@@ -48,7 +48,7 @@ namespace Persistence.Tests
                      ),
                      StorageItemQuery.Where()
                                      .MaximumPriceIs(20),
-                      ExpectItemIds("F293DDC3-5693-4D46-98AD-783A4A901F8B","896A0DC4-51FF-46B8-9289-D1E9110C0A1A")                                 
+                 ExpectItemIds("F293DDC3-5693-4D46-98AD-783A4A901F8B","896A0DC4-51FF-46B8-9289-D1E9110C0A1A")                                 
                 ).WithTestDisplayName("Maximum price test"));
 
             Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
@@ -61,7 +61,7 @@ namespace Persistence.Tests
                     StorageItemQuery.Where()
                                 .MinimumPriceIs(20)
                                 .MaximumPriceIs(30),
-                    ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
+                ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
                 ).WithTestDisplayName("Interval price test"));
 
         }
