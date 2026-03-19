@@ -2,14 +2,9 @@
 
 namespace Persistence
 {
-    public interface IPersistenceFacade
-    {
-        
-    }
-
     public interface IStorageItemRepository
     {
-        Task<IEnumerable<StorageItemRead>> GetStorageItems(object query);
+        public Task<IEnumerable<StorageItemRead>> GetStorageItems(StorageItemQuery query);
     }
 
     public interface IStorageRepository

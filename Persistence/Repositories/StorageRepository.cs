@@ -6,9 +6,9 @@ namespace Persistence.Repositories
 {
     internal class StorageRepository : IStorageRepository
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
-        public StorageRepository(ApplicationDbContext context)
+        public StorageRepository(IApplicationDbContext context)
         {
             _context = context;
         }
@@ -32,7 +32,7 @@ namespace Persistence.Repositories
         }
         private StorageRead? MapReadOut(Storage? entitystorage) => entitystorage != null
                                                                     ? new StorageRead(entitystorage.Id, entitystorage.Description, entitystorage.Capacity,
-                                                                                      entitystorage.StorageItems.Select(si => new StorageItemRead(si.ProductId, si.ItemId, si.Sku, si.Description))
+                                                                                      entitystorage.StorageItems.Select(si => new StorageItemRead(si.ProductId, si.ItemId, si.Sku, si.Description, si.Price))
                                                                                      )
                                                                     : null;
     }

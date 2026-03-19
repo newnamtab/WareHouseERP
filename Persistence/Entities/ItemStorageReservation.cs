@@ -1,6 +1,6 @@
 ﻿namespace Persistence.Entities
 {
-    internal class ProductStorageReservation
+    internal class ItemStorageReservation
     {
         public string ExternalReference { get; set; }
         public Guid ProductId { get; set; }
