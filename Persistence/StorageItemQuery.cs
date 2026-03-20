@@ -22,7 +22,7 @@
             this._maxPrice = maxPrice;
             return this;
         }
-        public StorageItemQuery CategoriesIncludes(IEnumerable<Guid> categoryIds)
+        public StorageItemQuery CategoriesIncludes(params Guid[] categoryIds)
         {
             this._includesCategoryIds = categoryIds;
             return this;
