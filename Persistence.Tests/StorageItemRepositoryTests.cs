@@ -9,7 +9,7 @@ namespace Persistence.Tests
     public class StorageItemRepositoryTests
     {
         [Theory]
-        [ClassData(typeof(StorageItemQueryTestRow))]
+        [ClassData(typeof(StorageItemQueryTestRows))]
         internal async Task StorageItems_Query_Tests(Mock<IApplicationDbContext> givenContextMock, StorageItemQuery query, IEnumerable<Guid> expectedStorageItemsIds)
         {
             var sut = GetSut(givenContextMock);
@@ -26,9 +26,9 @@ namespace Persistence.Tests
             return new StorageItemRepository(contextMock.Object);
         }
     }
-    internal class StorageItemQueryTestRow : TheoryData<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>
+    internal class StorageItemQueryTestRows : TheoryData<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>
     {
-        public StorageItemQueryTestRow()
+        public StorageItemQueryTestRows()
         {
             Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
