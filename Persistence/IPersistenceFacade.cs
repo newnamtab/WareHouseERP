@@ -2,11 +2,6 @@
 
 namespace Persistence
 {
-    public interface IStorageItemRepository
-    {
-        public Task<IEnumerable<StorageItemRead>> GetStorageItems(StorageItemQuery query);
-    }
-
     public interface IStorageRepository
     {
         //Task<StorageRead?> GetStorageByQuery(object query);

@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
-    <ProjectReference Include="..\WarehouseDomain\StorageManagement.csproj" />
+    <ProjectReference Include="..\StorageManagement\StorageManagement.csproj" />
   </ItemGroup>
 
 </Project>

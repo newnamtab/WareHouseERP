@@ -3,16 +3,20 @@ using Persistence.ReadModels;
 
 namespace Persistence.Repositories
 {
-    internal class StorageItemRepository : IStorageItemRepository
+    public interface IStorageItemQueryRepository
+    {
+        Task<IEnumerable<StorageItemRead>> QueryStorageItems(StorageItemQuery query);
+    }
+
+    internal class StorageItemQueryRepository : IStorageItemQueryRepository
     {
         private readonly IApplicationDbContext _context;
 
-        public StorageItemRepository(IApplicationDbContext context)
+        public StorageItemQueryRepository(IApplicationDbContext context)
         {
             _context = context;
         }
-
-        public async Task<IEnumerable<StorageItemRead>> GetStorageItems(StorageItemQuery query)
+        public async Task<IEnumerable<StorageItemRead>> QueryStorageItems(StorageItemQuery query)
         {
             var filteredItems = _context.StorageItems
                 .Include(si => si.StorageItemCategories)

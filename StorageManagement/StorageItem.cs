@@ -5,12 +5,11 @@
         public Guid ItemId { get; init; }
         public Guid ProductId { get; init; }
 
-        private StorageItem( Guid productId, Guid itemId)
+        public StorageItem( Guid productId, Guid itemId)
         {
             ItemId = itemId;
             ProductId = productId;
         }
-        public static StorageItem NewItem(Guid productId) => new StorageItem(productId, Guid.NewGuid() );
         public static StorageItem Empty() => new StorageItem(Guid.Empty, Guid.Empty);
     }
 }

@@ -4,6 +4,6 @@
   <Project Path="Persistence.Tests/Persistence.Tests.csproj" Id="19d918c1-ab93-47df-a2e1-ac68f3160232" />
   <Project Path="Persistence/Persistence.csproj" Id="efc3c12c-728f-444c-8de5-d25763e19734" />
   <Project Path="StorageManagement.Tests/StorageManagement.Tests.csproj" Id="af593938-7f22-4de4-a954-b370eac6bd23" />
-  <Project Path="WarehouseDomain/StorageManagement.csproj" Id="cd37a419-947d-4fbe-a2d2-d39121b8bfcc" />
+  <Project Path="StorageManagement/StorageManagement.csproj" Id="cd37a419-947d-4fbe-a2d2-d39121b8bfcc" />
   <Project Path="WareHouseERP/WareHouseERP.csproj" />
 </Solution>
