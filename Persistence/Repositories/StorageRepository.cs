@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence.Entities;
 using Persistence.ReadModels;
+using StorageManagement;
 
 namespace Persistence.Repositories
 {
@@ -13,19 +14,19 @@ namespace Persistence.Repositories
             _context = context;
         }
 
-        public async Task<StorageRead?> GetStorageById(Guid storageId)
+        public async Task<IStorage?> GetStorageById(Guid storageId)
         {
             var relevantStorage = await _context.Storages.FindAsync(storageId);
             return MapReadOut(relevantStorage);
         }
 
-        public async Task<StorageRead?> GetStorageWithProduct(Guid productId)
+        public async Task<IStorage?> GetStorageWithProduct(Guid productId)
         {
             var relevantStorage = await _context.Storages.FirstOrDefaultAsync(s => s.StorageItems.Any(si => si.ProductId == productId));
             return MapReadOut(relevantStorage);
         }
 
-        public async Task<StorageRead?> GetStorageWithSpace()
+        public async Task<IStorage?> GetStorageWithSpace()
         {
             var relevantStorage = await _context.Storages.FirstOrDefaultAsync(s => s.StorageItems.Count() < s.Capacity );
             return MapReadOut(relevantStorage);

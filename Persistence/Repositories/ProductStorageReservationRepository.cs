@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Persistence.Entities;
+using StorageManagement;
 
 namespace Persistence.Repositories
 {

@@ -1,7 +1,4 @@
 ﻿using Moq;
-using Persistence;
-using Persistence.ReadModels;
-using Persistence.Repositories;
 
 namespace StorageManagement.Tests
 {
@@ -121,7 +118,7 @@ namespace StorageManagement.Tests
         {
             return new StorageReservationManager(storageRepositoryMock.Object, storageItemWriteRepositoryMock.Object, productStorageReservationRepositoryMock.Object);
         }
-        private static Mock<IStorageRepository> GivenStorageRepository(StorageRead? returnsStorageWithSpace, StorageRead? returnsStorageWithProduct, StorageRead? returnsStorageById)
+        private static Mock<IStorageRepository> GivenStorageRepository(IStorage? returnsStorageWithSpace, IStorage? returnsStorageWithProduct, IStorage? returnsStorageById)
         {
             var storageRepositoryMock = new Mock<IStorageRepository>();
 
@@ -161,11 +158,44 @@ namespace StorageManagement.Tests
 
             return productStorageReservationManagerMock;
         }
-        private static StorageRead ReturnsStorageMockWithSpace(Guid storageId) => new StorageRead(storageId, "DummyStorageWithSpaceDescription", 100, Enumerable.Empty<StorageItemRead>());
-        private static StorageRead ReturnsStorageMockWithProduct(Guid storageId, Guid productId, Guid itemId) => new StorageRead(storageId, "DummyStorageWithProductDescription", 100, new [] { StorageItemMock(productId,itemId ) } );
-        private static StorageRead ReturnsStorageMockById(Guid storageId) => new StorageRead(storageId, "DummyStorageByIdDescription", 100, Enumerable.Empty<StorageItemRead>());
-        private static StorageRead? ReturnsNullStorageMock() => null;
+        private static IStorage ReturnsStorageMockWithSpace(Guid storageId)
+        {
+            var storageMock = new Mock<IStorage>();
+            storageMock.SetupGet(s => s.Id).Returns(storageId);
+            storageMock.SetupGet(s => s.Description).Returns("DummyStorageWithSpaceDescription");
+            storageMock.SetupGet(s => s.Capacity).Returns(20);
+            storageMock.SetupGet(s => s.StorageItems).Returns( Enumerable.Empty<IStorageItem> );
+            return storageMock.Object;
+        }
+        private static IStorage ReturnsStorageMockWithProduct(Guid storageId, Guid productId, Guid itemId)
+        {
+            var storageMock = new Mock<IStorage>();
+            storageMock.SetupGet(s => s.Id).Returns(storageId);
+            storageMock.SetupGet(s => s.Description).Returns("DummyStorageWithProductDescription");
+            storageMock.SetupGet(s => s.Capacity).Returns(20);
+            storageMock.SetupGet(s => s.StorageItems).Returns(new[] { StorageItemMock(productId, itemId) });
+            return storageMock.Object;
+        }
+        private static IStorage ReturnsStorageMockById(Guid storageId)
+        {
+            var storageMock = new Mock<IStorage>();
+            storageMock.SetupGet(s => s.Id).Returns(storageId);
+            storageMock.SetupGet(s => s.Description).Returns("DummyStorageByIdDescription");
+            storageMock.SetupGet(s => s.Capacity).Returns(20);
+            storageMock.SetupGet(s => s.StorageItems).Returns(Enumerable.Empty<IStorageItem>);
+            return storageMock.Object;
+        }
+        private static IStorage? ReturnsNullStorageMock() => null;
 
-        private static StorageItemRead StorageItemMock(Guid withProductId, Guid andItemId) => new StorageItemRead(withProductId, andItemId, "DummySku", "DummyItemDescription", 10);
+        private static IStorageItem StorageItemMock(Guid withProductId, Guid andItemId)
+        {
+            var storageItemMock = new Mock<IStorageItem>();
+            storageItemMock.SetupGet(s => s.ProductId).Returns(withProductId);
+            storageItemMock.SetupGet(s => s.ItemId).Returns(andItemId);
+            storageItemMock.SetupGet(s => s.SKU).Returns("DummySku");
+            storageItemMock.SetupGet(s => s.Description).Returns("DummyItemDescription");
+            storageItemMock.SetupGet(s => s.Price).Returns(20);
+            return storageItemMock.Object;
+        }
     }
 }

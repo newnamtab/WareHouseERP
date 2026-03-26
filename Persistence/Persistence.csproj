@@ -11,8 +11,11 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
 	</ItemGroup>
 	<ItemGroup>
-		<InternalsVisibleTo Include="Persistence.Tests"/>
-		<InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+		<InternalsVisibleTo Include="Persistence.Tests" />
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\StorageManagement\StorageManagement.csproj" />
 	</ItemGroup>
 
 </Project>

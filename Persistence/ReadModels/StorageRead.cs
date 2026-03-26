@@ -1,4 +1,6 @@
-﻿namespace Persistence.ReadModels
+﻿using StorageManagement;
+
+namespace Persistence.ReadModels
 {
-    public record StorageRead(Guid Id, string Description, int Capacity, IEnumerable<StorageItemRead> StorageItems);
+    public record StorageRead(Guid Id, string Description, int Capacity, IEnumerable<IStorageItem> StorageItems) : IStorage;
 }                            

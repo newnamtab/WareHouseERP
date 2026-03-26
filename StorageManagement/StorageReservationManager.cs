@@ -1,7 +1,4 @@
-﻿using Persistence;
-using Persistence.Repositories;
-
-namespace StorageManagement
+﻿namespace StorageManagement
 {
     internal class StorageReservationManager
     {

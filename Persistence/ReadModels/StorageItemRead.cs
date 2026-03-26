@@ -1,4 +1,6 @@
-﻿namespace Persistence.ReadModels
+﻿using StorageManagement;
+
+namespace Persistence.ReadModels
 {
-    public record StorageItemRead(Guid ProductId, Guid ItemId, string SKU, string Description, decimal Price );
+    public record StorageItemRead(Guid ProductId, Guid ItemId, string SKU, string Description, decimal Price) : IStorageItem;
 }                               

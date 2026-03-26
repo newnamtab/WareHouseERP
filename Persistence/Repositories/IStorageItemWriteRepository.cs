@@ -1,13 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StorageManagement;
 
 namespace Persistence.Repositories
 {
-    public interface IStorageItemWriteRepository
-    {
-        Task<bool> AddItemToStorage(IAddItemInformation itemInformation, Guid storageId);
-        Task<Guid> PickItemFromStorage(Guid productId, Guid fromStorageId);
-    }
-
     internal class StorageItemWriteRepository : IStorageItemWriteRepository
     {
 
