@@ -4,7 +4,7 @@ namespace Persistence
 {
     public interface IStorageRepository
     {
-        //Task<StorageRead?> GetStorageByQuery(object query);
+        //Task<IEnumerable<StorageRead>> GetStoragesByQuery(object query);
         Task<StorageRead?> GetStorageWithSpace();
         Task<StorageRead?> GetStorageWithProduct(Guid productId);
         Task<StorageRead?> GetStorageById(Guid storageId);

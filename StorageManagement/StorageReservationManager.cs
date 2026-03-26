@@ -3,24 +3,17 @@ using Persistence.Repositories;
 
 namespace StorageManagement
 {
-    public interface IProductStorageReservationManager
-    {
-        bool RecordStorageReservation(string forExternalReference, Guid storeageId, Guid productId);
-        Guid RetrieveStorageReservation(string forExternalReference, Guid productId);
-        void RemoveStorageReservation(string forExternalReference, Guid productId);
-    }
-
     internal class StorageReservationManager
     {
         private readonly IStorageRepository _storageRepository;
         private readonly IStorageItemWriteRepository _storageItemWriteRepository;
-        private readonly IProductStorageReservationManager _productStorageReservationManager;
+        private readonly IProductStorageReservationRepository _productStorageReservationRepository;
 
-        public StorageReservationManager(IStorageRepository storageRepository, IStorageItemWriteRepository storageItemWriteRepository, IProductStorageReservationManager productStorageReservationManager)
+        public StorageReservationManager(IStorageRepository storageRepository, IStorageItemWriteRepository storageItemWriteRepository, IProductStorageReservationRepository productStorageReservationRepository)
         {
             _storageRepository = storageRepository;
             _storageItemWriteRepository = storageItemWriteRepository;
-            _productStorageReservationManager = productStorageReservationManager;
+            _productStorageReservationRepository = productStorageReservationRepository;
         }
 
         public async Task<bool> ProductIn(AddItemInformation addItem)
@@ -38,7 +31,7 @@ namespace StorageManagement
             var relevantStorage = await _storageRepository.GetStorageWithProduct(productId);
             if (relevantStorage != null)
             {
-                return _productStorageReservationManager.RecordStorageReservation(forExternaleReference, relevantStorage.Id, productId);
+                return await _productStorageReservationRepository.RecordStorageReservation(forExternaleReference, relevantStorage.Id, productId);
             }
             return false;
         }
@@ -50,7 +43,7 @@ namespace StorageManagement
                 var removedItemId = await _storageItemWriteRepository.PickItemFromStorage(productId, relevantStorageId.Value);
                 if (removedItemId != Guid.Empty)
                 {
-                    _productStorageReservationManager.RemoveStorageReservation(forExternaleReference, productId);
+                    await _productStorageReservationRepository.RemoveStorageReservation(forExternaleReference, productId);
                     return removedItemId;
                 }
             }
@@ -58,7 +51,7 @@ namespace StorageManagement
         }
         private async Task<Guid?> RetrieveStorageReservation(string forExternalReference, Guid productId )
         {
-            var storageId = _productStorageReservationManager.RetrieveStorageReservation(forExternalReference, productId);
+            var storageId = await _productStorageReservationRepository.RetrieveStorageReservation(forExternalReference, productId);
             return (await _storageRepository.GetStorageById(storageId))?.Id;
         }
     }
