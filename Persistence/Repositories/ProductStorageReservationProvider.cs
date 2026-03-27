@@ -4,11 +4,11 @@ using StorageManagement;
 
 namespace Persistence.Repositories
 {
-    internal class ProductStorageReservationRepository : IProductStorageReservationRepository
+    internal class ProductStorageReservationProvider : IProductStorageReservationProvider
     {
         private readonly IApplicationDbContext _context;
 
-        public ProductStorageReservationRepository(IApplicationDbContext context)
+        public ProductStorageReservationProvider(IApplicationDbContext context)
         {
             _context = context;
         }

@@ -6,9 +6,9 @@ namespace StorageManagement.Tests
     {
         [Theory]
         [MemberData(nameof(ProductInData))]
-        public async Task Storage_Happy_Path_Can_Put_Product_In(Mock<IStorageRepository> storageRepositoryMock,
-                                                                Mock<IStorageItemWriteRepository> storageItemWriteRepositoryMock,
-                                                                Mock<IProductStorageReservationRepository> productStorageReservationRepositoryMock,
+        public async Task Storage_Happy_Path_Can_Put_Product_In(Mock<IStorageProvider> storageRepositoryMock,
+                                                                Mock<IStorageItemProvider> storageItemWriteRepositoryMock,
+                                                                Mock<IProductStorageReservationProvider> productStorageReservationRepositoryMock,
                                                                 bool expectedResult)
         {
             var sut = GetSut(storageRepositoryMock, storageItemWriteRepositoryMock, productStorageReservationRepositoryMock);
@@ -41,9 +41,9 @@ namespace StorageManagement.Tests
 
         [Theory]
         [MemberData(nameof(ReserveProductData))]
-        public async Task Storage_Happy_Path_Can_Reserve_Product(Mock<IStorageRepository> storageRepositoryMock,
-                                                                 Mock<IStorageItemWriteRepository> storageItemWriteRepositoryMock,
-                                                                 Mock<IProductStorageReservationRepository> productStorageReservationRepositoryMock,
+        public async Task Storage_Happy_Path_Can_Reserve_Product(Mock<IStorageProvider> storageRepositoryMock,
+                                                                 Mock<IStorageItemProvider> storageItemWriteRepositoryMock,
+                                                                 Mock<IProductStorageReservationProvider> productStorageReservationRepositoryMock,
                                                                  bool expectedResult)
         {
             var sut = GetSut(storageRepositoryMock, storageItemWriteRepositoryMock, productStorageReservationRepositoryMock);
@@ -76,9 +76,9 @@ namespace StorageManagement.Tests
 
         [Theory]
         [MemberData(nameof(ProductOutData))]
-        public async Task Storage_Happy_Path_Can_Take_Product_Out(Mock<IStorageRepository> storageRepositoryMock,
-                                                                  Mock<IStorageItemWriteRepository> storageItemWriteRepositoryMock,
-                                                                  Mock<IProductStorageReservationRepository> productStorageReservationRepositoryMock,
+        public async Task Storage_Happy_Path_Can_Take_Product_Out(Mock<IStorageProvider> storageRepositoryMock,
+                                                                  Mock<IStorageItemProvider> storageItemWriteRepositoryMock,
+                                                                  Mock<IProductStorageReservationProvider> productStorageReservationRepositoryMock,
                                                                   bool expectedToProductOut)
         {
             var sut = GetSut(storageRepositoryMock, storageItemWriteRepositoryMock, productStorageReservationRepositoryMock);
@@ -112,15 +112,15 @@ namespace StorageManagement.Tests
                                      };
         }
 
-        private StorageReservationManager GetSut(Mock<IStorageRepository> storageRepositoryMock,
-                                                 Mock<IStorageItemWriteRepository> storageItemWriteRepositoryMock,
-                                                 Mock<IProductStorageReservationRepository> productStorageReservationRepositoryMock)
+        private StorageReservationManager GetSut(Mock<IStorageProvider> storageRepositoryMock,
+                                                 Mock<IStorageItemProvider> storageItemWriteRepositoryMock,
+                                                 Mock<IProductStorageReservationProvider> productStorageReservationRepositoryMock)
         {
             return new StorageReservationManager(storageRepositoryMock.Object, storageItemWriteRepositoryMock.Object, productStorageReservationRepositoryMock.Object);
         }
-        private static Mock<IStorageRepository> GivenStorageRepository(IStorage? returnsStorageWithSpace, IStorage? returnsStorageWithProduct, IStorage? returnsStorageById)
+        private static Mock<IStorageProvider> GivenStorageRepository(IStorage? returnsStorageWithSpace, IStorage? returnsStorageWithProduct, IStorage? returnsStorageById)
         {
-            var storageRepositoryMock = new Mock<IStorageRepository>();
+            var storageRepositoryMock = new Mock<IStorageProvider>();
 
             storageRepositoryMock.Setup(repo => repo.GetStorageWithSpace())
                                  .ReturnsAsync(() => returnsStorageWithSpace);
@@ -132,9 +132,9 @@ namespace StorageManagement.Tests
                                   .ReturnsAsync((Guid storageId) => returnsStorageById );
             return storageRepositoryMock;
         }
-        private static Mock<IStorageItemWriteRepository> GivenStorageItemCan(bool beAdded, Guid pickItemId = default )
+        private static Mock<IStorageItemProvider> GivenStorageItemCan(bool beAdded, Guid pickItemId = default )
         {
-            var storageItemRepositoryMock = new Mock<IStorageItemWriteRepository>();
+            var storageItemRepositoryMock = new Mock<IStorageItemProvider>();
             
             storageItemRepositoryMock.Setup(repo => repo.AddItemToStorage(It.IsAny<IAddItemInformation>(), It.IsAny<Guid>()))
                                         .ReturnsAsync(beAdded);
@@ -144,9 +144,9 @@ namespace StorageManagement.Tests
 
             return storageItemRepositoryMock;
         }
-        private static Mock<IProductStorageReservationRepository> GivenProductStorageReservationManager(bool recordStorageReservation, Guid returnsProductReservationStorageId)
+        private static Mock<IProductStorageReservationProvider> GivenProductStorageReservationManager(bool recordStorageReservation, Guid returnsProductReservationStorageId)
         {
-            var productStorageReservationManagerMock = new Mock<IProductStorageReservationRepository>();
+            var productStorageReservationManagerMock = new Mock<IProductStorageReservationProvider>();
 
             productStorageReservationManagerMock.Setup(manager => manager.RecordStorageReservation(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                                                .ReturnsAsync(recordStorageReservation);

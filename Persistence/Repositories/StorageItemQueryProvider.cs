@@ -1,22 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Persistence.Entities;
 using Persistence.ReadModels;
+using StorageManagement;
 
 namespace Persistence.Repositories
 {
-    public interface IStorageItemQueryRepository
-    {
-        Task<IEnumerable<StorageItemRead>> QueryStorageItems(StorageItemQuery query);
-    }
-
-    internal class StorageItemQueryRepository : IStorageItemQueryRepository
+    internal class StorageItemQueryProvider : IStorageItemQueryProvider
     {
         private readonly IApplicationDbContext _context;
 
-        public StorageItemQueryRepository(IApplicationDbContext context)
+        public StorageItemQueryProvider(IApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<IEnumerable<StorageItemRead>> QueryStorageItems(StorageItemQuery query)
+        public async Task<IEnumerable<IStorageItem>> QueryStorageItems(IStorageItemQuery query)
         {
             var filteredItems = _context.StorageItems
                 .Include(si => si.StorageItemCategories)
@@ -28,7 +25,7 @@ namespace Persistence.Repositories
                                                     item.Description,
                                                     item.Price));
         }
-        private Func<Entities.StorageItem, bool> ItemsMatches(StorageItemQuery query)
+        private Func<StorageItem, bool> ItemsMatches(IStorageItemQuery query)
         {
             return (item) => 
             {

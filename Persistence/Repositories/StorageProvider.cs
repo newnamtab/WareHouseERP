@@ -5,11 +5,11 @@ using StorageManagement;
 
 namespace Persistence.Repositories
 {
-    internal class StorageRepository : IStorageRepository
+    internal class StorageProvider : IStorageProvider
     {
         private readonly IApplicationDbContext _context;
 
-        public StorageRepository(IApplicationDbContext context)
+        public StorageProvider(IApplicationDbContext context)
         {
             _context = context;
         }

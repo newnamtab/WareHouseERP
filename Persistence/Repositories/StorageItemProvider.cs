@@ -3,12 +3,12 @@ using StorageManagement;
 
 namespace Persistence.Repositories
 {
-    internal class StorageItemWriteRepository : IStorageItemWriteRepository
+    internal class StorageItemProvider : IStorageItemProvider
     {
 
         private readonly IApplicationDbContext _context;
 
-        public StorageItemWriteRepository(IApplicationDbContext context)
+        public StorageItemProvider(IApplicationDbContext context)
         {
             _context = context;
         }

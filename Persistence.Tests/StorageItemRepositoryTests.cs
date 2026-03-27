@@ -21,9 +21,9 @@ namespace Persistence.Tests
             Assert.Contains(result, item => expectedStorageItemsIds.Contains(item.ItemId));
         }
 
-        private StorageItemQueryRepository GetSut(Mock<IApplicationDbContext> contextMock)
+        private StorageItemQueryProvider GetSut(Mock<IApplicationDbContext> contextMock)
         {
-            return new StorageItemQueryRepository(contextMock.Object);
+            return new StorageItemQueryProvider(contextMock.Object);
         }
     }
     internal class StorageItemQueryTestRows : TheoryData<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>

@@ -2,11 +2,11 @@
 {
     internal class StorageReservationManager
     {
-        private readonly IStorageRepository _storageRepository;
-        private readonly IStorageItemWriteRepository _storageItemWriteRepository;
-        private readonly IProductStorageReservationRepository _productStorageReservationRepository;
+        private readonly IStorageProvider _storageRepository;
+        private readonly IStorageItemProvider _storageItemWriteRepository;
+        private readonly IProductStorageReservationProvider _productStorageReservationRepository;
 
-        public StorageReservationManager(IStorageRepository storageRepository, IStorageItemWriteRepository storageItemWriteRepository, IProductStorageReservationRepository productStorageReservationRepository)
+        public StorageReservationManager(IStorageProvider storageRepository, IStorageItemProvider storageItemWriteRepository, IProductStorageReservationProvider productStorageReservationRepository)
         {
             _storageRepository = storageRepository;
             _storageItemWriteRepository = storageItemWriteRepository;

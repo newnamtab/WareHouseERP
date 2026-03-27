@@ -1,6 +1,8 @@
-﻿namespace Persistence
+﻿using StorageManagement;
+
+namespace Persistence
 {
-    public class StorageItemQuery
+    internal class StorageItemQuery: IStorageItemQuery
     {
         private decimal? _minPrice;
         private decimal? _maxPrice;
@@ -28,13 +30,13 @@
             return this;
         }
 
-        internal bool PriceIntervalMatches(decimal price) =>
+        public bool PriceIntervalMatches(decimal price) =>
                  _minPrice.HasValue ? price >= _minPrice.Value
                                     : true
               && _maxPrice.HasValue ? price <= _maxPrice.Value
                                     : true;
 
-        internal bool MatchesCategories(IEnumerable<Guid> categoryIds)
+        public bool MatchesCategories(IEnumerable<Guid> categoryIds)
         { 
             if (categoryIds == null || !categoryIds.Any()) return true;
             
