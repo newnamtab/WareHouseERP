@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StorageManagement;
 
-namespace Persistence.Repositories
+namespace StorageManagement.Providers.SQL.Repositories
 {
     internal class StorageItemProvider : IStorageItemProvider
     {
 
-        private readonly IApplicationDbContext _context;
+        private readonly IStorageDbContext _context;
 
-        public StorageItemProvider(IApplicationDbContext context)
+        public StorageItemProvider(IStorageDbContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace Persistence.Repositories
                 StorageId = storageId,
                 Sku = itemInformation.Sku,
                 Description = itemInformation.Description,
-                Price = itemInformation.Price,
+                Price = itemInformation.Price
             };
             _context.StorageItems.Add(newStorageItem);
             return (await _context.SaveChangesAsync()) > 0;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Persistence
+namespace StorageManagement.Providers.SQL
 {
-    internal interface IApplicationDbContext
+    internal interface IStorageDbContext
     {
         DbSet<Entities.Storage> Storages { get; set; }
         DbSet<Entities.StorageItem> StorageItems { get; set; }
@@ -11,7 +11,7 @@ namespace Persistence
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 
-    internal class ApplicationDbContext : DbContext, IApplicationDbContext
+    internal class StorageDbContext : DbContext, IStorageDbContext
     {
         public DbSet<Entities.Storage> Storages { get; set; }
         public DbSet<Entities.StorageItem> StorageItems { get; set; }
@@ -19,7 +19,7 @@ namespace Persistence
 
         public DbSet<Entities.ItemStorageReservation> ItemStorageReservations { get; set; }
         
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public StorageDbContext(DbContextOptions<StorageDbContext> options)
             : base(options)
         {
         }

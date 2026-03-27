@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\StorageManagement.Providers.SQL\StorageManagement.Providers.SQL.csproj" />
     <ProjectReference Include="..\StorageManagement\StorageManagement.csproj" />
   </ItemGroup>
 

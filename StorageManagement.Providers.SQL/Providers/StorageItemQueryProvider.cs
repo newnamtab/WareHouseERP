@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Persistence.Entities;
-using Persistence.ReadModels;
+using StorageManagement.Providers.SQL.Entities;
+using StorageManagement.Providers.SQL.ReadModels;
 using StorageManagement;
 
-namespace Persistence.Repositories
+namespace StorageManagement.Providers.SQL.Repositories
 {
     internal class StorageItemQueryProvider : IStorageItemQueryProvider
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IStorageDbContext _context;
 
-        public StorageItemQueryProvider(IApplicationDbContext context)
+        public StorageItemQueryProvider(IStorageDbContext context)
         {
             _context = context;
         }

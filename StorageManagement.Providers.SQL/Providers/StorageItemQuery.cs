@@ -1,6 +1,4 @@
-﻿using StorageManagement;
-
-namespace Persistence
+﻿namespace StorageManagement.Providers.SQL
 {
     internal class StorageItemQuery: IStorageItemQuery
     {

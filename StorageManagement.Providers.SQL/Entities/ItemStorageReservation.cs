@@ -1,4 +1,4 @@
-﻿namespace Persistence.Entities
+﻿namespace StorageManagement.Providers.SQL.Entities
 {
     internal class ItemStorageReservation
     {

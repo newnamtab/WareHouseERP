@@ -1,14 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Persistence.Entities;
-using StorageManagement;
+using StorageManagement.Providers.SQL.Entities;
 
-namespace Persistence.Repositories
+namespace StorageManagement.Providers.SQL.Repositories
 {
     internal class ProductStorageReservationProvider : IProductStorageReservationProvider
     {
-        private readonly IApplicationDbContext _context;
+        private readonly IStorageDbContext _context;
 
-        public ProductStorageReservationProvider(IApplicationDbContext context)
+        public ProductStorageReservationProvider(IStorageDbContext context)
         {
             _context = context;
         }

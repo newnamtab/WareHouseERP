@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WareHouseERP.Data;
 using WareHouseERP.Authorization;
-using Persistence;
+using StorageManagement.Providers.SQL;
 
 var builder = WebApplication.CreateBuilder(args);
 

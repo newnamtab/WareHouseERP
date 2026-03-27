@@ -1,16 +1,16 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Moq.EntityFrameworkCore;
-using Persistence.Entities;
-using Persistence.Repositories;
+using StorageManagement.Providers.SQL.Entities;
+using StorageManagement.Providers.SQL.Repositories;
 
-namespace Persistence.Tests
+namespace StorageManagement.Providers.SQL.Tests
 {
     public class StorageItemRepositoryTests
     {
         [Theory]
         [ClassData(typeof(StorageItemQueryTestRows))]
-        internal async Task StorageItems_Query_Tests(Mock<IApplicationDbContext> givenContextMock, StorageItemQuery query, IEnumerable<Guid> expectedStorageItemsIds)
+        internal async Task StorageItems_Query_Tests(Mock<IStorageDbContext> givenContextMock, StorageItemQuery query, IEnumerable<Guid> expectedStorageItemsIds)
         {
             var sut = GetSut(givenContextMock);
 
@@ -21,16 +21,16 @@ namespace Persistence.Tests
             Assert.Contains(result, item => expectedStorageItemsIds.Contains(item.ItemId));
         }
 
-        private StorageItemQueryProvider GetSut(Mock<IApplicationDbContext> contextMock)
+        private StorageItemQueryProvider GetSut(Mock<IStorageDbContext> contextMock)
         {
             return new StorageItemQueryProvider(contextMock.Object);
         }
     }
-    internal class StorageItemQueryTestRows : TheoryData<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>
+    internal class StorageItemQueryTestRows : TheoryData<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>
     {
         public StorageItemQueryTestRows()
         {
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.Parse("F293DDC3-5693-4D46-98AD-783A4A901F8B"), Guid.NewGuid(), 10),
                       StorageItemWith(Guid.Parse("896A0DC4-51FF-46B8-9289-D1E9110C0A1A"), Guid.NewGuid(), 20),
@@ -41,7 +41,7 @@ namespace Persistence.Tests
                 ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
             ).WithTestDisplayName("Minimum Price Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                        StorageItemWith(Guid.Parse("F293DDC3-5693-4D46-98AD-783A4A901F8B"), Guid.NewGuid(), 10),
                        StorageItemWith(Guid.Parse("896A0DC4-51FF-46B8-9289-D1E9110C0A1A"), Guid.NewGuid(), 20),
@@ -52,7 +52,7 @@ namespace Persistence.Tests
                  ExpectItemIds("F293DDC3-5693-4D46-98AD-783A4A901F8B","896A0DC4-51FF-46B8-9289-D1E9110C0A1A")                                 
             ).WithTestDisplayName("Maximum Price Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.Parse("F293DDC3-5693-4D46-98AD-783A4A901F8B"), Guid.NewGuid(), 10),
                       StorageItemWith(Guid.Parse("896A0DC4-51FF-46B8-9289-D1E9110C0A1A"), Guid.NewGuid(), 20),
@@ -65,7 +65,7 @@ namespace Persistence.Tests
                 ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
             ).WithTestDisplayName("Interval Price Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.NewGuid(),
                                       Guid.NewGuid(), 10,
@@ -89,7 +89,7 @@ namespace Persistence.Tests
                 ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A")
             ).WithTestDisplayName("Single Item Category Query Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.NewGuid(),
                                       Guid.NewGuid(), 10,
@@ -113,7 +113,7 @@ namespace Persistence.Tests
                 ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
             ).WithTestDisplayName("Double Item Category Query Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.Parse("896A0DC4-51FF-46B8-9289-D1E9110C0A1A"),
                                       Guid.NewGuid(), 10,
@@ -138,7 +138,7 @@ namespace Persistence.Tests
                 ExpectItemIds("896A0DC4-51FF-46B8-9289-D1E9110C0A1A", "D9ECB2AE-8A4D-4589-AD86-4CE5C20D9FE7")
             ).WithTestDisplayName("Multiple Item Category Query Test"));
 
-            Add(new TheoryDataRow<Mock<IApplicationDbContext>, StorageItemQuery, IEnumerable<Guid>>(
+            Add(new TheoryDataRow<Mock<IStorageDbContext>, StorageItemQuery, IEnumerable<Guid>>(
                 Given(
                       StorageItemWith(Guid.Parse("896A0DC4-51FF-46B8-9289-D1E9110C0A1A"),
                                       Guid.NewGuid(), 10,
@@ -168,9 +168,9 @@ namespace Persistence.Tests
             ).WithTestDisplayName("Mixed Multiple Item Category Query Test"));
 
         }
-        private Mock<IApplicationDbContext> Given(params StorageItem[] storageItems)
+        private Mock<IStorageDbContext> Given(params StorageItem[] storageItems)
         {
-            var contextMock = new Mock<IApplicationDbContext>();
+            var contextMock = new Mock<IStorageDbContext>();
 
             contextMock.SetupGet(c => c.StorageItems).ReturnsDbSet(storageItems);
 

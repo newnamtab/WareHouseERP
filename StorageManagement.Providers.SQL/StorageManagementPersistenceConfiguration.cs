@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Persistence
+namespace StorageManagement.Providers.SQL
 {
     public static class StorageManagementPersistenceConfiguration
     {
         public static void ConfigureStorageManagement(this IServiceCollection services, string connectionString)
         {
-           services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+           services.AddDbContext<StorageDbContext>(options => options.UseSqlServer(connectionString));
         }
     }
 }
