@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="OrderManagement.Providers.SQL.Tests/OrderManagement.Providers.SQL.Tests.csproj" Id="01b52397-2a08-4e5b-b94a-0f8ee76fd813" />
+  <Project Path="OrderManagement.Providers.SQL/OrderManagement.Providers.SQL.csproj" Id="4b0c529d-45b4-4cb0-b27c-b1768008a898" />
   <Project Path="OrderManagement.Tests/OrderManagement.Tests.csproj" Id="97f59f00-e1bc-464c-a661-a21790bfb5f7" />
   <Project Path="OrderManagement/OrderManagement.csproj" Id="0faa5b6c-eff5-4a0c-b2cb-41ae2d2e2232" />
   <Project Path="StorageManagement.Providers.SQL.Tests/StorageManagement.Providers.SQL.Tests.csproj" Id="19d918c1-ab93-47df-a2e1-ac68f3160232" />
